@@ -1,9 +1,10 @@
 package com.sn.atos.mvc.appTest.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Product {
@@ -17,6 +18,19 @@ public class Product {
     private String category;
 
     private double amount;
+
+    @Lob
+    @Column(columnDefinition = "BLOB")
+    private byte[] photo;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Comment> comments ;
+
+    @ManyToMany(
+            mappedBy = "products",
+            cascade = CascadeType.ALL
+    )
+    private List<Vendor> vendors = new ArrayList<>();
 
     public Product() {}
 
@@ -57,5 +71,22 @@ public class Product {
     public void setAmount(double amount) {
         this.amount = amount;
     }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<Vendor> getVendors() {
+        return vendors;
+    }
+
+    public void setVendors(List<Vendor> vendors) {
+        this.vendors = vendors;
+    }
 }
+
 
