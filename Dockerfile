@@ -1,14 +1,18 @@
 # jdk
 FROM adoptopenjdk/openjdk11:alpine-jre
 
-#maven build -> fileName
-ARG JAR_FILE=target/appTest-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=target/appTest-0.0.1-SNAPSHOT
+ARG JAR_LIB_FILE=target/lib/
 
-# cd /opt/app
-WORKDIR /opt/app
+# cd /usr/local/runme
+WORKDIR /usr/local/app
 
-# copy file
-COPY --from=build /workspace/target/appTest-0.0.1-SNAPSHOT.jar app.jar
+# copy target/find-links.jar /usr/local/runme/app.jar
+COPY ${JAR_FILE} app.jar
 
-# java -jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# copy project dependencies
+# cp -rf target/lib/  /usr/local/runme/lib
+ADD ${JAR_LIB_FILE} lib/
+
+# java -jar /usr/local/runme/app.jar
+ENTRYPOINT ["java","-jar","app.jar"]
