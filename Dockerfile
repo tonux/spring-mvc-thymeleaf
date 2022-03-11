@@ -1,18 +1,12 @@
-# jdk
-FROM adoptopenjdk/openjdk11:alpine-jre
 
-ARG JAR_FILE=target/appTest-0.0.1-SNAPSHOT.jar
-ARG JAR_LIB_FILE=target/lib/
+FROM maven:3.6.3-jdk-11-slim AS build
+RUN mkdir -p /workspace
+WORKDIR /workspace
+COPY pom.xml /workspace
+COPY src /workspace/src
+RUN mvn -B -f pom.xml clean package -DskipTests
 
-# cd /usr/local/runme
-WORKDIR /usr/local/app
-
-# copy target/find-links.jar /usr/local/runme/app.jar
-COPY ${JAR_FILE} app.jar
-
-# copy project dependencies
-# cp -rf target/lib/  /usr/local/runme/lib
-ADD ${JAR_LIB_FILE} lib/
-
-# java -jar /usr/local/runme/app.jar
+FROM openjdk:11-jdk-slim
+COPY --from=build /workspace/target/*.jar app.jar
+EXPOSE 8080
 ENTRYPOINT ["java","-jar","app.jar"]
