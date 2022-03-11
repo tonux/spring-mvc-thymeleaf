@@ -2,7 +2,7 @@
 FROM adoptopenjdk/openjdk11:alpine-jre
 
 #maven build -> fileName
-ARG JAR_FILE=target/apptest-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=target/appTest-0.0.1-SNAPSHOT.jar
 
 # cd /opt/app
 WORKDIR /opt/app
