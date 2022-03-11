@@ -1,7 +1,7 @@
 # jdk
 FROM adoptopenjdk/openjdk11:alpine-jre
 
-ARG JAR_FILE=target/appTest-0.0.1-SNAPSHOT
+ARG JAR_FILE=target/appTest-0.0.1-SNAPSHOT.jar
 ARG JAR_LIB_FILE=target/lib/
 
 # cd /usr/local/runme
